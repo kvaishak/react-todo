@@ -4,7 +4,7 @@ import TodoList from './components/todolist'
 
 //Importing bootstrap and UUID
 import 'bootstrap/dist/css/bootstrap.min.css';
-import uuid from 'uuid';
+// import uuid from 'uuid';
 
 
 function App() {
