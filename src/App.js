@@ -8,7 +8,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 export default class App extends Component {
-  
+  todoCacheData;
+
   //constructor which initializes and holds the vale
   state = {
     items: [],
@@ -22,6 +23,8 @@ export default class App extends Component {
     this.setState({
       todotext: e.target.value
     });
+
+    this.handleDataCaching();
   }
 
   //method for handling the submit
@@ -40,13 +43,17 @@ export default class App extends Component {
       editItem: false
     });
 
+    this.handleDataCaching();
+    
   }
 
   //method for clearing the list
   clearList = () =>{
     this.setState({
       items : [] 
-    })
+    });
+
+    this.handleDataCaching();
   }
 
   //method for deleting individual todo
@@ -54,7 +61,9 @@ export default class App extends Component {
     const filterdItems = this.state.items.filter(item => item.id !== id);
     this.setState({
       items : filterdItems
-    })
+    });
+
+    this.handleDataCaching();
   }
 
   //method for handling the edit
@@ -67,7 +76,36 @@ export default class App extends Component {
       todotext: selectedItem.todotext,
       id: id,
       editItem: true
-    })
+    });
+
+    this.handleDataCaching();
+  }
+
+  //React Life cycle - called after the render method
+  componentDidMount() {
+    if (localStorage.getItem('reactTodoCache')) {
+      this.todoCacheData = JSON.parse(localStorage.getItem('reactTodoCache'));
+        this.setState({
+            items: this.todoCacheData.items,
+          id: this.todoCacheData.id,
+          todotext: this.todoCacheData.todotext,
+          editItem :  this.todoCacheData.editItem
+        })
+      } else {
+        this.setState({
+          items: [],
+          id:uuidv4(),
+          todotext:'',
+          editItem:false
+        })
+      }
+  }
+  //localstorage data updation
+  handleDataCaching(){
+     //using set-time out because otherwise the state woudint have updated
+     setTimeout(()=>{
+      localStorage.setItem('reactTodoCache', JSON.stringify(this.state));
+    }, 1000);
   }
 
   render(){
