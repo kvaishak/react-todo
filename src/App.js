@@ -44,6 +44,13 @@ export default class App extends Component {
 
   }
 
+  //method for clearing the list
+  clearList = () =>{
+    this.setState({
+      items : [] 
+    })
+  }
+
   render(){
     return (
       <div className="container">
@@ -51,7 +58,7 @@ export default class App extends Component {
           <div className="col-10 mx-auto col-md-8 mt-4">
             <h3 className="text-center text-capitalize"> Todo input</h3>
               <TodoInput todotext={this.state.todotext} handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
-              <TodoList items={this.state.items}/>
+              <TodoList items={this.state.items} clearList={this.clearList}/>
             </div>  
         </div>
       </div>
